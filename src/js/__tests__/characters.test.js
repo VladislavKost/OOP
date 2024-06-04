@@ -1,4 +1,20 @@
-import { createCharacter, attackDefence } from "../characters";
+// import { createCharacter } from "../app";
+import { Bowerman } from "../characters/Bowerman";
+import { Daemon } from "../characters/Daemon";
+import { Magician } from "../characters/Magician";
+import { Swordsman } from "../characters/Swordsman";
+import { Undead } from "../characters/Undead";
+import { Zombie } from "../characters/Zombie";
+import { Character } from "../characters/Character";
+
+const attackDefence = {
+  Bowerman: [25, 25],
+  Swordsman: [40, 10],
+  Magician: [10, 40],
+  Undead: [25, 25],
+  Zombie: [40, 10],
+  Daemon: [10, 40],
+};
 
 const getCharacterInfo = (name, type) => ({
   name: name,
@@ -10,15 +26,15 @@ const getCharacterInfo = (name, type) => ({
 });
 
 test("error short name", () => {
-  expect(() => createCharacter("J", "Daemon")).toThrow("Incorrect name");
+  expect(() => new Bowerman("B")).toThrow("Incorrect name");
 });
 
 test("error invalid character type", () => {
-  expect(() => createCharacter("John", "God")).toThrow("Invalid type");
+  expect(() => new Character("John", "God")).toThrow("Invalid type");
 });
 
 test("error levelUp died", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John");
   daemon.damage(500);
   expect(() => daemon.levelUp()).toThrow(
     "Impossible to level up a died character"
@@ -26,53 +42,53 @@ test("error levelUp died", () => {
 });
 
 test("error damage died", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John", "Daemon");
   daemon.damage(500);
   expect(() => daemon.damage(10)).toThrow(
     "Impossible to damage a died character"
   );
 });
 
-test("create Bowman", () => {
-  const bowman = createCharacter("John", "Bowman");
+test("create Bowerman", () => {
+  const bowerman = new Bowerman("John", "Bowerman");
 
-  expect(bowman).toMatchObject(getCharacterInfo("John", "Bowman"));
+  expect(bowerman).toEqual(getCharacterInfo("John", "Bowerman"));
 });
 
 test("create Swordsman", () => {
-  const swordsman = createCharacter("John", "Swordsman");
+  const swordsman = new Swordsman("John");
 
-  expect(swordsman).toMatchObject(getCharacterInfo("John", "Swordsman"));
+  expect(swordsman).toEqual(getCharacterInfo("John", "Swordsman"));
 });
 
 test("create Magician", () => {
-  const magician = createCharacter("John", "Magician");
+  const magician = new Magician("John", "Magician");
 
-  expect(magician).toMatchObject(getCharacterInfo("John", "Magician"));
+  expect(magician).toEqual(getCharacterInfo("John", "Magician"));
 });
 
 test("create Undead", () => {
-  const undead = createCharacter("John", "Undead");
+  const undead = new Undead("John", "Undead");
 
-  expect(undead).toMatchObject(getCharacterInfo("John", "Undead"));
+  expect(undead).toEqual(getCharacterInfo("John", "Undead"));
 });
 
 test("create Zombie", () => {
-  const zombie = createCharacter("John", "Zombie");
+  const zombie = new Zombie("John", "Zombie");
 
-  expect(zombie).toMatchObject(getCharacterInfo("John", "Zombie"));
+  expect(zombie).toEqual(getCharacterInfo("John", "Zombie"));
 });
 
 test("create Daemon", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John", "Daemon");
 
-  expect(daemon).toMatchObject(getCharacterInfo("John", "Daemon"));
+  expect(daemon).toEqual(getCharacterInfo("John", "Daemon"));
 });
 
 test("check damage live", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John", "Daemon");
   daemon.damage(10);
-  expect(daemon).toMatchObject({
+  expect(daemon).toEqual({
     name: "John",
     type: "Daemon",
     health: 90.4,
@@ -83,9 +99,9 @@ test("check damage live", () => {
 });
 
 test("check damage fatal", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John", "Daemon");
   daemon.damage(500);
-  expect(daemon).toMatchObject({
+  expect(daemon).toEqual({
     name: "John",
     type: "Daemon",
     health: 0,
@@ -96,10 +112,10 @@ test("check damage fatal", () => {
 });
 
 test("check levelUP", () => {
-  const daemon = createCharacter("John", "Daemon");
+  const daemon = new Daemon("John", "Daemon");
   daemon.levelUp();
 
-  expect(daemon).toMatchObject({
+  expect(daemon).toEqual({
     name: "John",
     type: "Daemon",
     health: 100,
